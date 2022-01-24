@@ -1,0 +1,33 @@
+base-folder: null
+target:  # regular expressions can be used.
+    - '.*\.json$'
+    - '.*\.yml$'
+    - '.*\.txt$'
+    - '.*\.html$'
+exclusion:
+    - ./.git
+    - ./.svn
+order:
+    environments:
+        - name: dev
+          string:
+              - dev
+              - hogehoge.DEV.hoge
+              - fff
+          exclusion-word:
+        - name: stg
+          string:
+              - stg
+              - hogehoge.STG.hoge
+              - aaa
+          exclusion-word:
+              - dev-store
+        - name: prd
+          string:
+              - prd
+              - hahuhahu.PRD.hahu
+              - ddd
+          exclusion-word:
+              - dev-store
+detail:
+    recursive: true

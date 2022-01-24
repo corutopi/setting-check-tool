@@ -1,0 +1,2 @@
+# for selenium
+PyYAML==5.3.1

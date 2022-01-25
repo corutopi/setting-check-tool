@@ -6,10 +6,12 @@
 # however if that string defined target environment's exclusion-word,
 # exclude that string.
 
-import yaml
 import pprint
 import os
 import re
+import argparse
+
+import yaml
 
 
 class SettingCheck:
@@ -59,25 +61,6 @@ class SettingCheck:
         return r
 
 
-def check_string(string, search):
-    """
-    return 'is string include search ?'
-    :param string:
-    :param search:
-    :return:
-    """
-
-
-def check_string_top(string, search, start=0):
-    """
-    return 'is string include '
-    :param string:
-    :param search:
-    :param start:
-    :return:
-    """
-
-
 def output_string(filepath, line_num, char_num, hit_str, ):
     CHAIN = ' :: '
     l = [filepath, line_num, char_num, hit_str]
@@ -88,9 +71,25 @@ def join_path(base, path):
     return os.path.join(base, path).replace('\\', '/')
 
 
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('folderfile', help='folder or file path')
+    parser.add_argument('env', help='environment string')
+    parser.add_argument('conffile', help='yaml file defined target ' +
+                                         'file names and check strings')
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
+    # import sys
+    # sys.argv.append('dummy')
+    # sys.argv.append('dev')
+    # sys.argv.append('conf\setting-check.yml')
+
     # 実行時引数を読み込む
-    base_folder = 'dummy'
+    args = get_args()
+    base_folder = args.folderfile
+    env = args.env
     # 設定ファイルを読み込む
     yml_path = 'conf/setting-check.yml'
     sc = SettingCheck()
@@ -99,12 +98,11 @@ if __name__ == '__main__':
     fl = sc.match_file_list(base_folder)
     # 検索開始
     for file in fl:
-        print(file)
         i = 0
         with open(file, mode='r') as f:
             l_num = 0
             for l in f:
-                for c, s in sc.check_string(l, 'stg'):
+                for c, s in sc.check_string(l, env):
                     print(output_string(file, l_num, c, s))
                 l_num += 1
 

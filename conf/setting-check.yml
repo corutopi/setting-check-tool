@@ -14,12 +14,14 @@ order:
               - dev
               - hogehoge.DEV.hoge
               - fff
+              - devandstg
           exclusion-word:
         - name: stg
           string:
               - stg
               - hogehoge.STG.hoge
               - aaa
+              - devandstg
           exclusion-word:
               - dev-store
         - name: prd

@@ -13,6 +13,8 @@ import argparse
 
 import yaml
 
+from util.encoding import file_encoding
+
 
 class SettingCheck:
     def __init__(self):
@@ -21,7 +23,7 @@ class SettingCheck:
         self.target = []
 
     def read_conf(self, yml_path):
-        with open(yml_path) as f:
+        with open(yml_path, mode='r', encoding=file_encoding(yml_path)) as f:
             yml = yaml.load(f, Loader=yaml.SafeLoader)
             # pprint.pprint(yml)
             self.search_list = {y['name']: y['string'] for y in
@@ -75,9 +77,14 @@ class SettingCheck:
         return r
 
 
-def output_string(filepath, line_num, char_num, hit_str, ):
+def output_string(filepath, line_num, char_num, hit_str, line_str, print_num = 10):
     CHAIN = ' :: '
-    l = [filepath, line_num, char_num, hit_str]
+    tmp_str = line_str.strip()
+    tmp_str = tmp_str[max(0, char_num - print_num):
+                      char_num + len(hit_str) + print_num]
+    tmp_str = '... ' + tmp_str + ' ...'
+    l = [filepath, line_num, char_num, hit_str,tmp_str
+         ]
     return CHAIN.join([str(x) for x in l])
 
 
@@ -116,10 +123,10 @@ if __name__ == '__main__':
     print('------')
     for file in fl:
         i = 0
-        with open(file, mode='r') as f:
+        with open(file, mode='r', encoding=file_encoding(file)) as f:
             l_num = 0
             for l in f:
                 for c, s in sc.check_string(l, env):
                     print(output_string('.' + file[len(base_folder):],
-                                        l_num, c, s))
+                                        l_num, c, s, l))
                 l_num += 1

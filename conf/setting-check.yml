@@ -15,21 +15,17 @@ order:
               - hogehoge.DEV.hoge
               - fff
               - devandstg
-          exclusion-word:
+              - あああ
         - name: stg
           string:
               - stg
               - hogehoge.STG.hoge
               - aaa
               - devandstg
-          exclusion-word:
-              - dev-store
         - name: prd
           string:
               - prd
               - hahuhahu.PRD.hahu
               - ddd
-          exclusion-word:
-              - dev-store
 detail:
     recursive: true
